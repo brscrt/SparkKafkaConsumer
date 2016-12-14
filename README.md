@@ -15,7 +15,7 @@ libraryDependencies += "org.mongodb" %% "casbah" % "2.5.0"
 ```
 ## Generating project files for eclipse
 
-go to the path of the folder that has build.sbt file and terminal sbt eclipse. This gives eclipse project files. Then in eclipse, import this project.
+go to the path of the folder that has build.sbt file and write on terminal `sbt eclipse`. This gives eclipse project files. Then in eclipse, import this project.
 
 ## Consumer.scala
 This class listens the given topics, calculates volume rated price value and writes the result on mongodb
@@ -79,3 +79,30 @@ object Consumer {
   }
 }
 ```
+## Dockerize the project
+
+To dockerize, javaapp and docker plugins must be added to build.sbt like below:
+```sh
+enablePlugins(sbtdocker.DockerPlugin, JavaAppPackaging)
+```
+Then the tasks need to be writen to generate dockerfile and image. Example tasks:
+
+```sh
+dockerfile in docker := {
+  val appDir: File = stage.value
+  val targetDir = "/app"
+
+  new Dockerfile {
+    from("java")
+    entryPoint(s"$targetDir/bin/${executableScriptName.value}")
+    copy(appDir, targetDir)
+  }
+}
+
+imageNames in docker := Seq(
+  // Sets the latest tag
+  ImageName(s"brscrt/sparkkafkaconsumer")
+
+)
+```
+Finally, come again build.sbt path and write `sbt docker`. This gives dockerfile and docker image. 
