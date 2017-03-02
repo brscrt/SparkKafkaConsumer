@@ -4,6 +4,8 @@ This project consumes data from Apache Kafka Producer service and calculate volu
 
 This is kafka producer project that produce data for this consumer project: https://github.com/brscrt/KafkaProducer
 
+This project is a part of [this project](https://github.com/brscrt/Volume-Weighted-Average-Price).
+
 ## Adding dependencies
 
 To use libraries .sbt is used. This dependecies are needed:
